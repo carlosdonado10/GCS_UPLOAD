@@ -1,0 +1,10 @@
+55
+Fold*
+processed_images/*
+.DS_Store
+.idea
+venv/
+
+*/*.pyc
+
+*/__pycache__/*
