@@ -36,9 +36,10 @@ def extract_images(pathIn, pathOut, fps, label):
             if rotation is not None:
                 image = cv2.rotate(image, rotation)
             _, image, _ = detect_faces(image, draw_box=False)
-            image = cv2.resize(image, dsize=(256, 256), interpolation=cv2.INTER_CUBIC)
-            convert_to_tfrecord(image, label, count)
-            upload_blob(bucket_name=bucket, source_file_name=os.path.join(pathOut, f'{count}.tfrecord'), destination_blob_name=f'{bucket_dir}/{str(uuid4())}.tfrecord')
+            if image:
+                image = cv2.resize(image, dsize=(256, 256), interpolation=cv2.INTER_CUBIC)
+                convert_to_tfrecord(image, label, count)
+                upload_blob(bucket_name=bucket, source_file_name=os.path.join(pathOut, f'{count}.tfrecord'), destination_blob_name=f'{bucket_dir}/{str(uuid4())}.tfrecord')
 
     except Exception as e:
         raise e
