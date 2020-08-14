@@ -78,7 +78,8 @@ def convert_to_tfrecord(image, label, name):
     image_raw = image.tostring()
     example = tf.train.Example(features=tf.train.Features(feature={
         'label': _int64_feature(int(label)),
-        'image_raw': _bytes_feature(image_raw)}))
+        'image_raw': _bytes_feature(image_raw),
+    }))
     writer.write(example.SerializeToString())
     logging.info('DONE :)')
 
