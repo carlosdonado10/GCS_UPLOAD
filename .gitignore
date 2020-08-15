@@ -5,6 +5,8 @@ processed_images/*
 .idea
 venv/
 
-*/*.pyc
+*.pyc
 
 */__pycache__/*
+
+*.npy
