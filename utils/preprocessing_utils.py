@@ -9,6 +9,7 @@ from tqdm import tqdm
 from utils.detect_faces import detect_faces
 from config import rotations
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 
 #TODO:  resize images y cortar cara
@@ -32,7 +33,7 @@ def extract_images(pathIn, pathOut, fps, label):
             vidcap.set(cv2.CAP_PROP_POS_MSEC, msec)    # added this line
             success, image = vidcap.read()
 
-            rotation = rotations.get(int(pathIn.split('/')[1]))
+            rotation = rotations.get(int(Path(pathIn).as_posix().split('/')[1]))
             if rotation is not None:
                 image = cv2.rotate(image, rotation)
             _, image, _ = detect_faces(image, draw_box=False)
@@ -73,7 +74,7 @@ def convert_to_tfrecord(image, label, name):
     :param label:
     :return:
     """
-    tfrecord_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'processed_images/{name}.tfrecord')
+    tfrecord_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'processed_images', f'{name}.tfrecord')
     writer = tf.io.TFRecordWriter(tfrecord_path)
     logging.info('Writing TFRecord file')
     image_raw = image.tostring()
@@ -90,6 +91,7 @@ def sample_image(pathIn: str):
     vidcap.set(cv2.CAP_PROP_POS_MSEC, 0)
     success, image = vidcap.read()
     plt.imshow(image)
+    plt.title(pathIn)
     plt.show()
     _ = input(f'Viewing {pathIn} Press enter to continue \n')
 
