@@ -1,7 +1,6 @@
 import os
 
 from utils.preprocessing_utils import extract_images, sample_image
-import pickle
 import numpy as np
 
 def main():
@@ -20,12 +19,12 @@ def main():
 
                 for video in videos:
                     if os.path.join(fold, participant, video) not in checkpoint:
+                        np.save(os.path.join('utils', 'checkpoint'), checkpoint)
                         label = int(video.split('.')[0]) // 5
                         print(f'Uploading frames from {os.path.join(fold, participant, video)}... :)')
                         extract_images(pathIn=os.path.join(fold, participant, video), pathOut='./processed_images', fps=1,
                                        label=label)
                         checkpoint = np.append(checkpoint, os.path.join(fold, participant, video))
-                        np.save(os.path.join('utils', 'checkpoint'), checkpoint)
                     else:
                         print(f'skipping {os.path.join(fold, participant, video)} -> Already uploaded frames :D')
 
